@@ -1,8 +1,11 @@
 import React from 'react';
+import GlobalStyle from 'theme/GlobalStyle';
+import SearchCitiesPage from 'views/SearchCitiesPage';
 
 const Root = () => (
   <>
-    Hello World!
+    <GlobalStyle />
+    <SearchCitiesPage />
   </>
 );
 
