@@ -1,9 +1,8 @@
 import React from 'react';
+import SearchCitiesBar from 'components/molecules/SearchCitiesBar';
 
 const SearchCitiesPage = () => (
-  <>
-    SearchCitiesPage
-  </>
+    <SearchCitiesBar />
 );
 
 export default SearchCitiesPage;
