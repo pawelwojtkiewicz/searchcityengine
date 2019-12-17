@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer } from 'react';
+import React, { useState, useRef, useReducer, useEffect } from 'react';
 import { useDetectOutSideClick } from 'hooks/useDetectOutSideClick'
 import styled from 'styled-components';
 import Input from 'components/atoms/Input'
@@ -66,6 +66,11 @@ const SearchCitiesBar = () => {
             [event.target.name]: event.target.value
         });
     }
+
+    
+
+    
+
     return (
         <StyledWrapper onClick={() => setListVisible(true)} ref={listOfElements}>
             <Input className="search" onChange={handleInputChange} name="searchInputContent" value={inputContent.searchInputContent}/>
@@ -74,9 +79,9 @@ const SearchCitiesBar = () => {
                 <ListWrapper>
                     {itemList
                     .filter(item => item.countryName
-                        .toLowerCase()
-                        .includes(
-                            inputContent.searchInputContent.toLowerCase()
+                        .toUpperCase()
+                        .startsWith(
+                            inputContent.searchInputContent.toUpperCase()
                         ))
                     .map(({id, countryName, isoCode}) => <ListElement key={id} countryName={countryName} isoCode={isoCode}/> )}
                 </ListWrapper>
