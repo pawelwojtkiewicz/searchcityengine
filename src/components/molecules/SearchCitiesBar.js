@@ -38,57 +38,106 @@ const SearchCitiesBar = () => {
         }
     );
 
-    const [itemList, setItemList] = useState([
+    const [itemList, setItemList] = useReducer(
+        (state, newState) => ({ ...state, ...newState}),
         {
-            id: "1",
-            countryName: "Poland",
-            isoCode: "PL",
-        },
-        {
-            id: "2",
-            countryName: "Germany",
-            isoCode: "DE",
-        },
-        {
-            id: "3",
-            countryName: "Spain",
-            isoCode: "ES",
-        },
-        {
-            id: "4",
-            countryName: "France",
-            isoCode: "F",
-        },
-    ]);
+            activeItem: 0,
+            itemList: [
+                {
+                    id: "1",
+                    countryName: "Poland",
+                    active: false,
+                },
+                {
+                    id: "2",
+                    countryName: "Germany",
+                    active: false,
+                },
+                {
+                    id: "3",
+                    countryName: "Spain",
+                    active: false,
+                },
+                {
+                    id: "4",
+                    countryName: "France",
+                    active: false,
+                },
+            ]
+        }
+    );
 
-    const [searchedElements, getSearchedElements] = useState(itemList);
+    const [searchedElements, getSearchedElements] = useState(itemList.itemList);
 
     const handleKeyPress = () => {
         getSearchedElements(
-          itemList.filter(item =>
+          itemList.itemList.filter(item =>
             item.countryName
               .toUpperCase()
               .startsWith(inputContent.searchInputContent.toUpperCase())
           )
         );
-      };
+    };
     
     const handleInputChange = event => {
         setInputContent({
-          [event.target.name]: event.target.value
+            "searchInputContent": event.target.value
         });
     };
 
+    const handleChoice = event => {
+        setInputContent({
+            "searchInputContent": event.target.innerText
+        });
+        handleKeyPress();
+    };
+
+    const removeActiveItem = () => {
+        setItemList({activeItem: 0});
+    }
+
+    const onKeyDown = event => {
+        switch(event.keyCode){
+            case 13:
+               
+                break;
+            case 38:
+                if(itemList.activeItem === itemList.itemList.length) return
+                setItemList({activeItem: itemList.activeItem + 1});
+                break;
+            case 40:
+                if(itemList.activeItem === 0) return
+                setItemList({activeItem: itemList.activeItem - 1});
+                break; 
+        }
+    }
+
+    console.log(searchedElements);
+
     return (
-        <StyledWrapper onClick={() => setListVisible(true)} ref={listOfElements}>
-            <Input className="search" onKeyUp={handleKeyPress} onChange={handleInputChange} name="searchInputContent" value={inputContent.searchInputContent}/>
+        <StyledWrapper ref={listOfElements}>
+            {itemList.activeItem}
+            <Input 
+                className="search" 
+                name="searchInputContent" 
+                value={inputContent.searchInputContent} 
+                onClick={() => {removeActiveItem(); setListVisible(true)}}
+                onKeyUp={handleKeyPress} 
+                onChange={handleInputChange} 
+                onKeyDown={onKeyDown} />
             <Button />
             {isListVisible && (
-                <ListWrapper>
+                <ListWrapper onClick={() => {removeActiveItem(); setListVisible(false)}}>
                     {
                         searchedElements.length !== 0 ? 
-                        searchedElements.map(item => <ListElement key={item.id} countryName={item.countryName} isoCode={item.isoCode}/>) : 
-                        <ListElement countryName={"no cities"} />
+                        searchedElements.map(item => 
+                        <ListElement
+                            handleChoice={handleChoice} 
+                            key={item.id} 
+                            countryName={item.countryName} 
+                            active={item.active}
+                        />) : 
+                        <ListElement countryName={"no cities"}/>
                     }  
                 </ListWrapper>
             )}   
