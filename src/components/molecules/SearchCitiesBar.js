@@ -61,29 +61,29 @@ const SearchCitiesBar = () => {
         },
     ]);
 
-    const handleInputChange = event => {
-        setInputContent({
-            [event.target.name]: event.target.value
-        });
-    }
+    const [searchedElements, getSearchedElements] = useState(itemList);
+
 
     
+        const handleInputChange = event => {
+            
+            console.log(event.target.value)
+            setInputContent({
+                [event.target.name]: event.target.value
+            });
 
-    
+            
+        }
 
+        console.log(searchedElements)
+        
     return (
         <StyledWrapper onClick={() => setListVisible(true)} ref={listOfElements}>
             <Input className="search" onChange={handleInputChange} name="searchInputContent" value={inputContent.searchInputContent}/>
             <Button />
             {isListVisible && (
                 <ListWrapper>
-                    {itemList
-                    .filter(item => item.countryName
-                        .toUpperCase()
-                        .startsWith(
-                            inputContent.searchInputContent.toUpperCase()
-                        ))
-                    .map(({id, countryName, isoCode}) => <ListElement key={id} countryName={countryName} isoCode={isoCode}/> )}
+                    {searchedElements.map(item => <ListElement key={item.id} countryName={item.countryName} isoCode={item.isoCode}/> )}
                 </ListWrapper>
             )}   
         </StyledWrapper>
