@@ -7,8 +7,8 @@ const StyledLi = styled.li`{
   height: 50px;
 }`;
 
-const ListElement = ({key, countryName, isoCode}) => (
-  <StyledLi key={key} value={isoCode}>
+const ListElement = ({id, countryName, isoCode}) => (
+  <StyledLi key={id} value={isoCode}>
     {countryName} 
   </StyledLi>
   );
