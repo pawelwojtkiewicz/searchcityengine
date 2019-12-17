@@ -63,27 +63,33 @@ const SearchCitiesBar = () => {
 
     const [searchedElements, getSearchedElements] = useState(itemList);
 
-
+    const handleKeyPress = () => {
+        getSearchedElements(
+          itemList.filter(item =>
+            item.countryName
+              .toUpperCase()
+              .startsWith(inputContent.searchInputContent.toUpperCase())
+          )
+        );
+      };
     
-        const handleInputChange = event => {
-            
-            console.log(event.target.value)
-            setInputContent({
-                [event.target.name]: event.target.value
-            });
+    const handleInputChange = event => {
+        setInputContent({
+          [event.target.name]: event.target.value
+        });
+    };
 
-            
-        }
-
-        console.log(searchedElements)
-        
     return (
         <StyledWrapper onClick={() => setListVisible(true)} ref={listOfElements}>
-            <Input className="search" onChange={handleInputChange} name="searchInputContent" value={inputContent.searchInputContent}/>
+            <Input className="search" onKeyUp={handleKeyPress} onChange={handleInputChange} name="searchInputContent" value={inputContent.searchInputContent}/>
             <Button />
             {isListVisible && (
                 <ListWrapper>
-                    {searchedElements.map(item => <ListElement key={item.id} countryName={item.countryName} isoCode={item.isoCode}/> )}
+                    {
+                        searchedElements.length !== 0 ? 
+                        searchedElements.map(item => <ListElement key={item.id} countryName={item.countryName} isoCode={item.isoCode}/>) : 
+                        <ListElement countryName={"no cities"} />
+                    }  
                 </ListWrapper>
             )}   
         </StyledWrapper>
