@@ -2,9 +2,11 @@ import React, { useState, useRef, useReducer } from 'react';
 import { useDetectOutSideClick } from 'hooks/useDetectOutSideClick'
 import styled from 'styled-components';
 import Input from 'components/atoms/Input'
+import Button from 'components/atoms/Button'
 import ListElement from 'components/atoms/ListElement';
 
 const StyledWrapper = styled.div`
+    position: relative;
     flex-direction: column;
     height: fit-content;
     margin: 100px auto 0 auto;
@@ -67,6 +69,7 @@ const SearchCitiesBar = () => {
     return (
         <StyledWrapper onClick={() => setListVisible(true)} ref={listOfElements}>
             <Input className="search" onChange={handleInputChange} name="searchInputContent" value={inputContent.searchInputContent}/>
+            <Button />
             {isListVisible && (
                 <ListWrapper>
                     {itemList
