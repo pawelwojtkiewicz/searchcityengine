@@ -1,13 +1,16 @@
+import React from 'react';
 import styled from 'styled-components';
 
-const listElement = styled.li`
+const StyledLi = styled.li`{
+  display: flex;
+  align-items: center;
+  height: 50px;
+}`;
 
-`;
-
-const listElement = () => (
-   <>
-    element
-   </>
+const ListElement = ({key, countryName, isoCode}) => (
+  <StyledLi key={key} value={isoCode}>
+    {countryName} 
+  </StyledLi>
   );
   
-  export default listElement;
+  export default ListElement;

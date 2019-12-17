@@ -1,8 +1,8 @@
 import React from 'react';
-import SearchCitiesBar from 'components/molecules/SearchCitiesBar';
+import SearchCitiesContainer from 'components/organism/SearchCitiesContainer';
 
 const SearchCitiesPage = () => (
-    <SearchCitiesBar />
+    <SearchCitiesContainer />
 );
 
 export default SearchCitiesPage;

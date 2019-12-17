@@ -13,7 +13,6 @@ const Input = styled.input`
     width: 300px;
     height: 50px;
     padding: 0 25px;
-    margin: 100px auto;
     box-shadow: 0px 0px 44px -9px rgba(0,0,0,0.27);
     border-radius: 15px;
     color: #000000;
