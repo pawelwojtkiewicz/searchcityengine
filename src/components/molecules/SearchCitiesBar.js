@@ -98,7 +98,6 @@ const SearchCitiesBar = () => {
                 if(activeOption === searchedElements.length) return;
                 setNewActiveOption(activeOption + 1);
                 searchedElements.map((item, index) => (index + 1) === activeOption + 1 ? item.active = true : item.active = false);
-                
                 break;
             case 38:
                 if(activeOption === 0) return
