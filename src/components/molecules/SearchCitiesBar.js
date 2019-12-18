@@ -31,7 +31,9 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
     const listOfElements = useRef(null);
     useDetectOutSideClick(listOfElements, setListVisible)
 
-    const [inputContent, setInputContent] = useState(searchInputContent = "");
+    const [inputContent, setInputContent] = useState(
+        { searchInputContent: "" }
+    );
 
     const [activeOption, setNewActiveOption] = useState(0);
 
