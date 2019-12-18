@@ -89,7 +89,10 @@ const SearchCitiesBar = () => {
         setInputContent({
             "searchInputContent": event.target.innerText
         });
-        handleKeyPress();
+        
+        getSearchedElements(itemList.itemList.filter(item =>
+            item.countryName === event.target.innerText)
+        )
     };
 
     const removeActiveItem = () => {
