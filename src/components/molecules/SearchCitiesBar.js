@@ -32,72 +32,57 @@ const SearchCitiesBar = () => {
     useDetectOutSideClick(listOfElements, setListVisible)
 
     const [inputContent, setInputContent] = useReducer(
-        (state, newState) => ({ ...state, ...newState}),
-        {
-            searchInputContent: "",
-        }
+        ( state, newState ) => ({ ...state, ...newState }), { searchInputContent: "" }
     );
+
+    const [activeOption, setNewActiveOption] = useState(0);
 
     const [itemList, setItemList] = useReducer(
         (state, newState) => ({ ...state, ...newState}),
-        {
-            activeItem: 0,
-            itemList: [
+            [
                 {
-                    id: "1",
+                    id: 1,
                     countryName: "Poland",
-                    active: false,
+                    active: 'false',
                 },
                 {
-                    id: "2",
+                    id: 2,
                     countryName: "Germany",
-                    active: false,
+                    active: 'false',
                 },
                 {
-                    id: "3",
+                    id: 3,
                     countryName: "Spain",
-                    active: false,
+                    active: 'false',
                 },
                 {
-                    id: "4",
+                    id: 4,
                     countryName: "France",
-                    active: false,
+                    active: 'false',
                 },
             ]
-        }
     );
 
-    const [searchedElements, getSearchedElements] = useState(itemList.itemList);
+    const [searchedElements, getSearchedElements] = useState(itemList);
 
     const handleKeyPress = () => {
         getSearchedElements(
-          itemList.itemList.filter(item =>
+          itemList.filter(item =>
             item.countryName
               .toUpperCase()
               .startsWith(inputContent.searchInputContent.toUpperCase())
           )
         );
-    };
+    }; 
     
-    const handleInputChange = event => {
-        setInputContent({
-            "searchInputContent": event.target.value
-        });
-    };
+    const handleInputChange = event => setInputContent({ "searchInputContent": event.target.value });
 
     const handleChoice = event => {
-        setInputContent({
-            "searchInputContent": event.target.innerText
-        });
-        
-        getSearchedElements(itemList.itemList.filter(item =>
-            item.countryName === event.target.innerText)
-        )
+        setInputContent({ "searchInputContent": event.target.innerText });
+        getSearchedElements(itemList.filter(item => item.countryName === event.target.innerText));
     };
 
-    const removeActiveItem = () => {
-        setItemList({activeItem: 0});
-    }
+    const removeActiveItem = () => setNewActiveOption(0);
 
     const onKeyDown = event => {
         switch(event.keyCode){
@@ -105,8 +90,8 @@ const SearchCitiesBar = () => {
                
                 break;
             case 38:
-                if(itemList.activeItem === itemList.itemList.length) return
-                setItemList({activeItem: itemList.activeItem + 1});
+                if(activeOption === itemList.length) return;
+                setNewActiveOption(activeOption + 1);
                 break;
             case 40:
                 if(itemList.activeItem === 0) return
@@ -115,11 +100,9 @@ const SearchCitiesBar = () => {
         }
     }
 
-    console.log(searchedElements);
-
     return (
         <StyledWrapper ref={listOfElements}>
-            {itemList.activeItem}
+            {activeOption}
             <Input 
                 className="search" 
                 name="searchInputContent" 

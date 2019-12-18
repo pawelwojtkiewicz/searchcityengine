@@ -7,7 +7,7 @@ const StyledLi = styled.li`{
   height: 50px;
 }`;
 
-const ListElement = ({id, countryName, handleChoice}) => (
+const ListElement = ({id, countryName, handleChoice, active}) => (
   <StyledLi key={id} onClick={handleChoice}>
     {countryName}
   </StyledLi>
