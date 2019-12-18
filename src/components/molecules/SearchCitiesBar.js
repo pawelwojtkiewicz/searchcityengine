@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer, useEffect } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import { useDetectOutSideClick } from 'hooks/useDetectOutSideClick'
 import styled from 'styled-components';
 import Input from 'components/atoms/Input'
@@ -15,7 +15,7 @@ const StyledWrapper = styled.div`
 const ListWrapper = styled.ul`
     width: 300px;
     min-height: 50px;
-    padding: 10px 25px;
+    padding: 10px 0;
     margin: 10px 0 0 0;
     box-shadow: 0px 0px 44px -9px rgba(0,0,0,0.27);
     border-radius: 15px;
@@ -82,27 +82,34 @@ const SearchCitiesBar = () => {
         getSearchedElements(itemList.filter(item => item.countryName === event.target.innerText));
     };
 
-    const removeActiveItem = () => setNewActiveOption(0);
+    const removeActiveItem = () => {
+        setNewActiveOption(0);
+        searchedElements.find(element => element.active ? element.active = !element.active : null);
+    };
 
     const onKeyDown = event => {
         switch(event.keyCode){
             case 13:
-               
-                break;
-            case 38:
-                if(activeOption === itemList.length) return;
-                setNewActiveOption(activeOption + 1);
+                const newInputContent = searchedElements.find(element => element.active);
+                setInputContent({ "searchInputContent": newInputContent.countryName });
+                setListVisible(false)
                 break;
             case 40:
-                if(itemList.activeItem === 0) return
-                setItemList({activeItem: itemList.activeItem - 1});
+                if(activeOption === searchedElements.length) return;
+                setNewActiveOption(activeOption + 1);
+                searchedElements.map((item, index) => (index + 1) === activeOption + 1 ? item.active = true : item.active = false);
+                
+                break;
+            case 38:
+                if(activeOption === 0) return
+                setNewActiveOption(activeOption - 1);
+                searchedElements.map((item, index) => (index + 1) === activeOption - 1 ? item.active = true : item.active = false);
                 break; 
         }
     }
-
+    
     return (
         <StyledWrapper ref={listOfElements}>
-            {activeOption}
             <Input 
                 className="search" 
                 name="searchInputContent" 
