@@ -31,9 +31,7 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
     const listOfElements = useRef(null);
     useDetectOutSideClick(listOfElements, setListVisible)
 
-    const [inputContent, setInputContent] = useReducer(
-        ( state, newState ) => ({ ...state, ...newState }), { searchInputContent: "" }
-    );
+    const [inputContent, setInputContent] = useState(searchInputContent = "");
 
     const [activeOption, setNewActiveOption] = useState(0);
 
@@ -74,11 +72,15 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
         );
     }; 
     
-    const handleInputChange = event => setInputContent({ "searchInputContent": event.target.value });
-
+    const handleInputChange = event => {
+        setInputContent({ "searchInputContent": event.target.value });
+        setSendButtonError(false);
+    }
+    
     const handleChoice = event => {
         setInputContent({ "searchInputContent": event.target.innerText });
         getSearchedElements(itemList.filter(item => item.countryName === event.target.innerText));
+        setSendButtonError(false);
     };
 
     const removeActiveItem = () => {
