@@ -26,7 +26,7 @@ const ListWrapper = styled.ul`
     list-style-type: none;
 `;
 
-const SearchCitiesBar = () => {
+const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) => {
     const [isListVisible, setListVisible] = useState(false);
     const listOfElements = useRef(null);
     useDetectOutSideClick(listOfElements, setListVisible)
@@ -37,30 +37,29 @@ const SearchCitiesBar = () => {
 
     const [activeOption, setNewActiveOption] = useState(0);
 
-    const [itemList, setItemList] = useReducer(
-        (state, newState) => ({ ...state, ...newState}),
-            [
-                {
-                    id: 1,
-                    countryName: "Poland",
-                    active: 'false',
-                },
-                {
-                    id: 2,
-                    countryName: "Germany",
-                    active: 'false',
-                },
-                {
-                    id: 3,
-                    countryName: "Spain",
-                    active: 'false',
-                },
-                {
-                    id: 4,
-                    countryName: "France",
-                    active: 'false',
-                },
-            ]
+    const [itemList, setItemList] = useState(
+        [
+            {
+                id: 1,
+                countryName: "Poland",
+                active: false,
+            },
+            {
+                id: 2,
+                countryName: "Germany",
+                active: false,
+            },
+            {
+                id: 3,
+                countryName: "Spain",
+                active: false,
+            },
+            {
+                id: 4,
+                countryName: "France",
+                active: false,
+            },
+        ]
     );
 
     const [searchedElements, getSearchedElements] = useState(itemList);
@@ -87,6 +86,10 @@ const SearchCitiesBar = () => {
         searchedElements.find(element => element.active ? element.active = !element.active : null);
     };
 
+    const submitData = () => {
+        inputContent.searchInputContent === "" ? setSendButtonError(true) : getNewCities();
+    }
+
     const onKeyDown = event => {
         switch(event.keyCode){
             case 13:
@@ -106,18 +109,20 @@ const SearchCitiesBar = () => {
                 break; 
         }
     }
-    
+
     return (
         <StyledWrapper ref={listOfElements}>
             <Input 
                 className="search" 
-                name="searchInputContent" 
+                name="searchInputContent"
                 value={inputContent.searchInputContent} 
+                placeholder="Choose country"
+                buttonError={sendButtonError}
                 onClick={() => {removeActiveItem(); setListVisible(true)}}
                 onKeyUp={handleKeyPress} 
                 onChange={handleInputChange} 
                 onKeyDown={onKeyDown} />
-            <Button />
+            <Button onClick={submitData} />
             {isListVisible && (
                 <ListWrapper onClick={() => {removeActiveItem(); setListVisible(false)}}>
                     {
@@ -126,7 +131,7 @@ const SearchCitiesBar = () => {
                         <ListElement
                             handleChoice={handleChoice} 
                             key={item.id} 
-                            countryName={item.countryName} 
+                            countryName={item.countryName}
                             active={item.active}
                         />) : 
                         <ListElement countryName={"no cities"}/>

@@ -21,5 +21,5 @@ const ListElement = ({id, countryName, handleChoice, active}) => (
     {countryName} 
   </StyledLi>
 );
-  
+
 export default ListElement;

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Input = styled.input`
   display: flex;
@@ -20,6 +20,15 @@ const Input = styled.input`
     font-weight: 600;
     font-size: 16px;v
   }
+
+  ${({ buttonError }) =>
+  buttonError &&
+  css`
+    border: 2px solid red;
+    &::placeholder{
+      color: red;
+    }
+  `}
 `;
 
 export default Input;
