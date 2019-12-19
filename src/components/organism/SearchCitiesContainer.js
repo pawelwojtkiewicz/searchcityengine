@@ -7,6 +7,32 @@ const StyledWrapper = styled.div`
     height: 100vh;
 `;
 
+const countryList = [
+            {
+                id: 1,
+                countryName: "Poland",
+                active: false,
+            },
+            {
+                id: 2,
+                countryName: "Germany",
+                active: false,
+            },
+            {
+                id: 3,
+                countryName: "Spain",
+                active: false,
+            },
+            {
+                id: 4,
+                countryName: "France",
+                active: false,
+            },
+        ];
+
+
+
+
 const getNewCities = () => {
     const baseURL = `https://api.openaq.org/v1/cities/?country=`;
     const city = 'PL'
@@ -35,7 +61,7 @@ const SearchCitiesContainer = () => {
 
     return (
         <StyledWrapper>
-            <SearchCitiesBar sendButtonError={sendButtonError} setSendButtonError={setSendButtonError} getNewCities={getNewCities}/>
+            <SearchCitiesBar countryList={countryList} sendButtonError={sendButtonError} setSendButtonError={setSendButtonError} getNewCities={getNewCities}/>
             {/* Tutaj wyszukane divy */}
         </StyledWrapper>
     );

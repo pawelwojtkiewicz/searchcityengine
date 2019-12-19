@@ -26,7 +26,7 @@ const ListWrapper = styled.ul`
     list-style-type: none;
 `;
 
-const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) => {
+const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getNewCities}) => {
     const [isListVisible, setListVisible] = useState(false);
     const listOfElements = useRef(null);
     useDetectOutSideClick(listOfElements, setListVisible)
@@ -37,51 +37,26 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
 
     const [activeOption, setNewActiveOption] = useState(0);
 
-    const [itemList, setItemList] = useState(
-        [
-            {
-                id: 1,
-                countryName: "Poland",
-                active: false,
-            },
-            {
-                id: 2,
-                countryName: "Germany",
-                active: false,
-            },
-            {
-                id: 3,
-                countryName: "Spain",
-                active: false,
-            },
-            {
-                id: 4,
-                countryName: "France",
-                active: false,
-            },
-        ]
-    );
+    const [searchedElements, getSearchedElements] = useState(countryList);
 
-    const [searchedElements, getSearchedElements] = useState(itemList);
-
-    const handleKeyPress = () => {
-        getSearchedElements(
-          itemList.filter(item =>
-            item.countryName
-              .toUpperCase()
-              .startsWith(inputContent.searchInputContent.toUpperCase())
-          )
-        );
-    }; 
-    
     const handleInputChange = event => {
-        setInputContent({ "searchInputContent": event.target.value });
+        const newInputContain = event.target.value;
+
+        getSearchedElements(
+            countryList.filter(item =>
+              item.countryName
+                .toUpperCase()
+                .startsWith(newInputContain.toUpperCase())
+            )
+          );
+
+        setInputContent({ "searchInputContent": newInputContain });
         setSendButtonError(false);
     }
     
     const handleChoice = event => {
         setInputContent({ "searchInputContent": event.target.innerText });
-        getSearchedElements(itemList.filter(item => item.countryName === event.target.innerText));
+        getSearchedElements(countryList.filter(item => item.countryName === event.target.innerText));
         setSendButtonError(false);
     };
 
@@ -95,19 +70,23 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
     }
 
     const onKeyDown = event => {
+        const enter = 13;
+        const arrowUp = 40;
+        const arrowDown = 38;
+
         switch(event.keyCode){
-            case 13:
+            case enter:
                 const newInputContent = searchedElements.find(element => element.active);
                 setListVisible(false);
                 if(newInputContent === undefined) return;
                 setInputContent({ "searchInputContent": newInputContent.countryName });
                 break;
-            case 40:
+            case arrowUp:
                 if(activeOption === searchedElements.length) return;
                 setNewActiveOption(activeOption + 1);
                 searchedElements.map((item, index) => (index + 1) === activeOption + 1 ? item.active = true : item.active = false);
                 break;
-            case 38:
+            case arrowDown:
                 if(activeOption === 0) return;
                 setNewActiveOption(activeOption - 1);
                 searchedElements.map((item, index) => (index + 1) === activeOption - 1 ? item.active = true : item.active = false);
@@ -124,7 +103,6 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
                 placeholder="Choose country"
                 buttonError={sendButtonError}
                 onClick={() => {removeActiveItem(); setListVisible(true)}}
-                onKeyUp={handleKeyPress} 
                 onChange={handleInputChange} 
                 onKeyDown={onKeyDown} />
             <Button onClick={submitData} />
