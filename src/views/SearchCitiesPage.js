@@ -45,29 +45,25 @@ const SearchCitiesPage = () => {
         }
     );
 
-    const getCities = async cityIso => {
-        const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&osrder_by=count&sort=desc&limit=10`;   
+    const getCities = async countryIso => { //poprawić nazwę
+        const baseURL = `https://api.openaq.org/v1/cities/?country=${countryIso}&order_by=count&sort=desc&limit=10`;   
         setCitiesOptions({isLoading: true});
         try {
-            fetch(baseURL)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    console.log("Error fetch!"); //modal
-                }
-            })
-            .then(response => {
-                const cities = response.results
-                setCitiesOptions({citiesList: cities, isLoading: false});
-            })
-            .catch(error => {
-                setCitiesOptions({isLoading: false});
-                console.log(error); //modal
-            });
+            const response = await fetch(baseURL)
+            // .then(response => {
+            //     if (response.ok) {
+            //       return response.json();
+            //     } else {
+            //         setCitiesOptions({isLoading: false});
+            //         console.log("ERROR");
+            //     }
+            //   })
+            const data = await response.json();
+
+            return data;
         } catch(error){
             setCitiesOptions({isLoading: false});
-            console.log(error); //modal
+            console.log('ERROR ' + error); //modal
         }
     }
 
@@ -78,18 +74,24 @@ const SearchCitiesPage = () => {
 
     const handleShowCities = chosenCountry => {
         const isoCode = getIsoCode(chosenCountry);
-        if(isoCode) getCities(isoCode).then(( cityData => setCitiesOptions({citiesList: cityData})));
+        if(isoCode) getCities(isoCode).then(( response => {
+            console.log(response)
+            const cities = response ? response.results : [];
+            setCitiesOptions({citiesList: cities, isLoading: false});
+        }));
         else console.log("Wrong typed country"); //modal
     }
-    
+
     return (
         <StyledWrapper>
             <Search 
                 handleShowCities={handleShowCities} 
                 countryList={countryList} 
             />
-            {citiesOptions.isLoading ? "Loading" : null}
-            {/* <CitiesContainer cityList={cityList}/> */}
+            <CitiesContainer
+                isLoading={citiesOptions.isLoading} 
+                citiesList={citiesOptions.citiesList}
+            />
         </StyledWrapper>  
     )
 }

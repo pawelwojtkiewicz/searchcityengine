@@ -6,20 +6,21 @@ const StyledWrapper = styled.div`
   
 `;
 
-const CitiesContainer = ({cityList}) => {
-    let content;
+const CitiesContainer = ({isLoading, citiesList}) => {
+    //let content;
 
-    if (cityList === null){
-        return "";
-    } else if (cityList.length === 0){
-        return "Ładowanie"
-    } else if (cityList.length > 0){
-        return "Miasta"
-    }
+    // if (cityList === null){
+    //     return "";
+    // } else if (cityList.length === 0){
+    //     return "Ładowanie"
+    // } else if (cityList.length > 0){
+    //     return "Miasta"
+    // }
 
     return (
         <StyledWrapper>
-            {content}
+            {isLoading && "Loading"}
+            {citiesList.length > 0 && "Miasta"}
         </StyledWrapper>
     );
 }
