@@ -16,10 +16,10 @@ const StyledLi = styled.li`{
   }
 }`;
 
-const ListElement = ({id, countryName, handleChoice, active}) => (
+const SearchElement = ({id, countryName, handleChoice, active}) => (
   <StyledLi className={active && "active"} key={id} onClick={handleChoice}>
     {countryName} 
   </StyledLi>
 );
 
-export default ListElement;
+export default SearchElement;
