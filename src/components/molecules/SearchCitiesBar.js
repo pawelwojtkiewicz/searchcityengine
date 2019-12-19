@@ -27,17 +27,13 @@ const ListWrapper = styled.ul`
     list-style-type: none;
 `;
 
-const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getNewCities}) => {
+const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getCities}) => {
     const [isListVisible, setListVisible] = useState(false);
     const listOfElements = useRef(null);
     useDetectOutSideClick(listOfElements, setListVisible)
 
-    const [inputContent, setInputContent] = useState(
-        { searchInputContent: "" }
-    );
-
+    const [searchInputContent, setSearchInputContent] = useState("");
     const [activeOption, setNewActiveOption] = useState(0);
-
     const [searchedElements, getSearchedElements] = useState(countryList);
 
     const handleInputChange = event => {
@@ -51,12 +47,12 @@ const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getN
             )
           );
 
-        setInputContent({ "searchInputContent": newInputContain });
+        setSearchInputContent(newInputContain);
         setSendButtonError(false);
     }
     
     const handleChoice = event => {
-        setInputContent({ "searchInputContent": event.target.innerText });
+        setSearchInputContent(event.target.innerText);
         getSearchedElements(countryList.filter(item => item.countryName === event.target.innerText));
         setSendButtonError(false);
     };
@@ -67,7 +63,7 @@ const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getN
     };
 
     const submitData = () => {
-        inputContent.searchInputContent === "" ? setSendButtonError(true) : getNewCities();
+        searchInputContent.searchInputContent === "" ? setSendButtonError(true) : getCities(searchInputContent);
     }
 
     const onKeyDown = event => {
@@ -80,7 +76,7 @@ const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getN
                 const newInputContent = searchedElements.find(element => element.active);
                 setListVisible(false);
                 if(newInputContent === undefined) return;
-                setInputContent({ "searchInputContent": newInputContent.countryName });
+                setSearchInputContent(newInputContent.countryName);
                 break;
             case arrowUp:
                 if(activeOption === searchedElements.length) return;
@@ -100,7 +96,7 @@ const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getN
             <Input 
                 className="search" 
                 name="searchInputContent"
-                value={inputContent.searchInputContent} 
+                value={searchInputContent} 
                 placeholder="Choose country"
                 buttonError={sendButtonError}
                 onClick={() => {removeActiveItem(); setListVisible(true)}}
