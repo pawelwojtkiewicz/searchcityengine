@@ -9,71 +9,15 @@ const StyledWrapper = styled.div`
    margin: 50px auto;
 `;
 
-const countryList = [
-    {
-        id: 1,
-        countryName: "Poland",
-        active: false,
-        isoCode: 'PL',
-    },
-    {
-        id: 2,
-        countryName: "Germany",
-        active: false,
-        isoCode: 'DE',
-    },
-    {
-        id: 3,
-        countryName: "Spain",
-        active: false,
-        isoCode: 'ES',
-    },
-    {
-        id: 4,
-        countryName: "France",
-        active: false,
-        isoCode: 'FR',
-    },
-];
-
-const getCities = async cityIso => {
-    const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&order_by=count&sort=desc&limit=10`;   
-        try {
-            const response = await fetch(baseURL);
-            const data = await response.json();
-            
-            return data.results;
-        } catch(err){
-            console.log(err);
-        }
-}
-
-const getIsoCode = chosenCountry => {
-    const country = countryList.find(country => country.countryName === chosenCountry);
-    return country === undefined ? false : country.isoCode;
-};
-
-const SearchCitiesContainer = () => {
+const SearchCitiesContainer = ({handleShowCities, countryList}) => {
     const listOfElements = useRef(null);
     const [isListVisible, setListVisible] = useState(false);
     const [searchInputContent, setSearchInputContent] = useState("");
     const [activeOption, setNewActiveOption] = useState(0);
     const [searchedElements, getSearchedElements] = useState(countryList);
     const [sendButtonError, setSendButtonError] = useState(false);
-    const [cityList, setCityList] = useState(null);
-
     useDetectOutSideClick(listOfElements, setListVisible);
 
-    const handleShowCities = chosenCountry => {
-        const isoCode = getIsoCode(chosenCountry);
-        if(isoCode){
-            setCityList([]);
-            getCities(isoCode).then(( cityData => setCityList(cityData)));
-        } else {
-            console.log("Wrong typed country");
-        }
-    }
-    
     const handleInputChange = event => {
         const newInputContain = event.target.value;
 
