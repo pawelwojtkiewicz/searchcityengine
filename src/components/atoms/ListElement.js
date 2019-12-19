@@ -17,10 +17,7 @@ const StyledLi = styled.li`{
 }`;
 
 const ListElement = ({id, countryName, handleChoice, active}) => (
-  // <StyledLi className={active && "active"} key={id} onClick={handleChoice}>
-  //   {countryName} 
-  // </StyledLi>
-  <StyledLi className={active && "active"} key={id} >
+  <StyledLi className={active && "active"} key={id} onClick={handleChoice}>
     {countryName} 
   </StyledLi>
 );
