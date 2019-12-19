@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Input from 'components/atoms/Input'
 import Button from 'components/atoms/Button'
 import ListElement from 'components/atoms/ListElement';
+import MagnifyingGlass from 'assets/icons/magnifyingGlass.svg';
 
 const StyledWrapper = styled.div`
     position: relative;
@@ -105,7 +106,7 @@ const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getN
                 onClick={() => {removeActiveItem(); setListVisible(true)}}
                 onChange={handleInputChange} 
                 onKeyDown={onKeyDown} />
-            <Button onClick={submitData} />
+            <Button onClick={submitData} MagnifyingGlass={MagnifyingGlass}/>
             {isListVisible && (
                 <ListWrapper onClick={() => {removeActiveItem(); setListVisible(false)}}>
                     {

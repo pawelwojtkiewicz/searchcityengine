@@ -30,9 +30,6 @@ const countryList = [
             },
         ];
 
-
-
-
 const getNewCities = () => {
     const baseURL = `https://api.openaq.org/v1/cities/?country=`;
     const city = 'PL'
@@ -54,9 +51,7 @@ const getNewCities = () => {
 
 
 const SearchCitiesContainer = () => {
-    
     const [chosenCities, setNewCities] = useState("");
-
     const [sendButtonError, setSendButtonError] = useState(false);
 
     return (
