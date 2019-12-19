@@ -27,7 +27,7 @@ const ListWrapper = styled.ul`
     list-style-type: none;
 `;
 
-const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getCities}) => {
+const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, handleShowCities}) => {
     const [isListVisible, setListVisible] = useState(false);
     const listOfElements = useRef(null);
     useDetectOutSideClick(listOfElements, setListVisible)
@@ -63,7 +63,7 @@ const SearchCitiesBar = ({countryList, sendButtonError, setSendButtonError, getC
     };
 
     const submitData = () => {
-        searchInputContent.searchInputContent === "" ? setSendButtonError(true) : getCities(searchInputContent);
+        searchInputContent === "" ? setSendButtonError(true) : handleShowCities(searchInputContent);
     }
 
     const onKeyDown = event => {

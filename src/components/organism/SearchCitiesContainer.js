@@ -34,34 +34,57 @@ const countryList = [
             },
         ];
 
-const getNewCities = city => {
-    const baseURL = `https://api.openaq.org/v1/cities/?country=`;
-
-    const getCities = async (city) => {
+const getCities = async cityIso => {
+    const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&order_by=count&sort=desc&limit=10`;   
         try {
-            const response = await fetch(`${baseURL}${city}`);
+            const response = await fetch(baseURL);
             const data = await response.json();
             
             return data.results;
         } catch(err){
             console.log(err);
         }
-    }
 }
 
-const getCities = chosenCountry => {
-    console.log(chosenCountry)
-    const getIsoCode = countryList.filter(country => country.countryName === chosenCountry);
-    console.log(getIsoCode);
-}
+const getIsoCode = chosenCountry => {
+    const country = countryList.find(country => country.countryName === chosenCountry);
+    return country === undefined ? false : country.isoCode;
+};
 
 const SearchCitiesContainer = () => {
+    const [cityList, setCityList] = useState(null);
     const [sendButtonError, setSendButtonError] = useState(false);
 
+    const handleShowCities = chosenCountry => {
+        const isoCode = getIsoCode(chosenCountry);
+        if(isoCode){
+            setCityList([]);
+            getCities(isoCode).then(( cityData => setCityList(cityData)));
+        } else {
+            console.log("Wrong typed country");
+        }
+    }
+
+    const Aaa = () => {
+        if (cityList === null) {
+            return "Nie ma nic";
+          } else if (cityList.length === 0) {
+            return "Ładowanie"
+          } else if (cityList.length > 0 ){
+            return "Som oferty"
+          }
+    }
+
+
+    
+
+
+
+    console.log(cityList)
     return (
         <StyledWrapper>
-            <SearchCitiesBar countryList={countryList} sendButtonError={sendButtonError} setSendButtonError={setSendButtonError} getCities={getCities}/>
-            {/* Tutaj wyszukane divy */}
+            <SearchCitiesBar countryList={countryList} sendButtonError={sendButtonError} setSendButtonError={setSendButtonError} handleShowCities={handleShowCities}/>
+            <Aaa />
         </StyledWrapper>
     );
 }
