@@ -98,8 +98,9 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
         switch(event.keyCode){
             case 13:
                 const newInputContent = searchedElements.find(element => element.active);
+                setListVisible(false);
+                if(newInputContent === undefined) return;
                 setInputContent({ "searchInputContent": newInputContent.countryName });
-                setListVisible(false)
                 break;
             case 40:
                 if(activeOption === searchedElements.length) return;
@@ -107,7 +108,7 @@ const SearchCitiesBar = ({sendButtonError, setSendButtonError, getNewCities}) =>
                 searchedElements.map((item, index) => (index + 1) === activeOption + 1 ? item.active = true : item.active = false);
                 break;
             case 38:
-                if(activeOption === 0) return
+                if(activeOption === 0) return;
                 setNewActiveOption(activeOption - 1);
                 searchedElements.map((item, index) => (index + 1) === activeOption - 1 ? item.active = true : item.active = false);
                 break; 
