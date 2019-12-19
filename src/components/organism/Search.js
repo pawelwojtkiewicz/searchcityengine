@@ -73,17 +73,7 @@ const SearchCitiesContainer = () => {
             console.log("Wrong typed country");
         }
     }
-
-    // const Aaa = () => {
-    //     if (cityList === null) {
-    //         return "Nie ma nic";
-    //       } else if (cityList.length === 0) {
-    //         return "Ładowanie"
-    //       } else if (cityList.length > 0 ){
-    //         return "Som oferty"
-    //       }
-    // }
-
+    
     const handleInputChange = event => {
         const newInputContain = event.target.value;
 
