@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import styled from 'styled-components';
 import Search from 'components/organism/Search';
+import CitiesContainer from 'components/organism/CitiesContainer';
 
 const StyledWrapper = styled.div`
     width: 100%;
     height: 100vh;
-    
+    flex-direction: column;
 `;
 
 const countryList = [
@@ -35,39 +36,60 @@ const countryList = [
     },
 ];
 
-const getCities = async cityIso => {
-    const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&order_by=count&sort=desc&limit=10`;   
-        try {
-            const response = await fetch(baseURL);
-            const data = await response.json();
-            
-            return data.results;
-        } catch(err){
-            console.log(err);
-        }
-}
-
-const getIsoCode = chosenCountry => {
-    const country = countryList.find(country => country.countryName === chosenCountry);
-    return country === undefined ? false : country.isoCode;
-};
-
 const SearchCitiesPage = () => {
-    const [cityList, setCityList] = useState(null);
+    const [citiesOptions, setCitiesOptions] = useReducer(
+        (state, newState) => ({ ...state, ...newState}),
+        {
+            citiesList: [],
+            isLoading: false,
+        }
+    );
 
-    const handleShowCities = chosenCountry => {
-        const isoCode = getIsoCode(chosenCountry);
-        if(isoCode){
-            setCityList([]);
-            getCities(isoCode).then(( cityData => setCityList(cityData)));
-        } else {
-            console.log("Wrong typed country");
+    const getCities = async cityIso => {
+        const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&order_by=count&sort=desc&limit=10`;   
+        setCitiesOptions({isLoading: true});
+        try {
+            fetch(baseURL)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log("Error fetch!"); //modal
+                }
+            })
+            .then(response => {
+                const cities = response.results
+                setCitiesOptions({citiesList: cities, isLoading: false});
+            })
+            .catch(error => {
+                setCitiesOptions({isLoading: false});
+                console.log(error); //modal
+            });
+        } catch(error){
+            setCitiesOptions({isLoading: false});
+            console.log(error); //modal
         }
     }
 
+    const getIsoCode = chosenCountry => {
+        const country = countryList.find(country => country.countryName === chosenCountry);
+        return country === undefined ? false : country.isoCode;
+    };
+
+    const handleShowCities = chosenCountry => {
+        const isoCode = getIsoCode(chosenCountry);
+        if(isoCode) getCities(isoCode).then(( cityData => setCitiesOptions({citiesList: cityData})));
+        else console.log("Wrong typed country"); //modal
+    }
+    
     return (
         <StyledWrapper>
-            <Search handleShowCities={handleShowCities} countryList={countryList} />
+            <Search 
+                handleShowCities={handleShowCities} 
+                countryList={countryList} 
+            />
+            {citiesOptions.isLoading ? "Loading" : null}
+            {/* <CitiesContainer cityList={cityList}/> */}
         </StyledWrapper>  
     )
 }
