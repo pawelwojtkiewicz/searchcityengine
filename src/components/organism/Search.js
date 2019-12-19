@@ -65,7 +65,8 @@ const SearchCitiesContainer = ({handleShowCities, countryList}) => {
                 if(activeOption === 0) return;
                 setNewActiveOption(activeOption - 1);
                 searchedElements.map((item, index) => (index + 1) === activeOption - 1 ? item.active = true : item.active = false);
-                break; 
+                break;
+            default: return;
         }
     }
 

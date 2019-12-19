@@ -46,7 +46,7 @@ const SearchCitiesPage = () => {
     );
 
     const getCities = async cityIso => {
-        const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&order_by=count&sort=desc&limit=10`;   
+        const baseURL = `https://api.openaq.org/v1/cities/?country=${cityIso}&osrder_by=count&sort=desc&limit=10`;   
         setCitiesOptions({isLoading: true});
         try {
             fetch(baseURL)
