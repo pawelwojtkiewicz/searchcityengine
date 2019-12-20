@@ -34,38 +34,36 @@ const CitiesList = ({cityName, population}) => {
     );
     const elementContent = useRef(null);
 
-    const getCityDescription = countryIso => {
-        const baseURL = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&explaintext&prop=extracts&explaintext&exintro&redirects=1&exsentences=5&titles=Warszawa`;
+    const getCityDescription = cityName => {
+        const baseURL = `https://en.wikipedia.org/w/api.php?action=query`;
+        const additionalParams= `format=json&origin=*&explaintext&prop=extracts&explaintext&exintro&redirects=1&exsentences=5`
+
         setcityOptions({cityOptions: "", isLoading: true});
-        try {
-            const response = fetch(baseURL)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    setcityOptions({isLoading: false});
-                    console.log("ERROR");
-                    return false; 
-                }
-              })
-            const data = response;
-            return data;
-        } catch(error){
+        fetch(`${baseURL}&${additionalParams}&titles=${cityName}`)
+        .then(response => {
+            if(!response.ok){
+                console.log("error");
+                setcityOptions({isLoading: false});
+                return false;
+            }
+            return response.json();
+        })
+        .then(description => {
+            const a0 = Object.values(description.query.pages);
+            const a1 = (array) => array.extract;
+            setcityOptions({ cityDescription: a1(...a0), isLoading: false });
+        })
+        .catch(error => {
             setcityOptions({isLoading: false});
-            console.log('ERROR ' + error); //modal
-        }
+            console.log("ERROR " + error);
+        });
     }
 
-    const toggleElements = event => {
+
+    const toggleElements = cityName => {
         const showItem = () => {
             elementContent.current.style.display = "flex";
-            getCityDescription().then(( response => {
-                const a0 = Object.values(response.query.pages);
-                const a1 = (array) => array.extract;
-                console.log(a1(...a0));
-                //const cities = response ? response.results : [];
-                //setCitiesOptions({citiesList: cities, isLoading: false});
-            }));
+            if (cityOptions.cityDescription === "") getCityDescription(cityName);   
         }
 
         const hideItem = () => {
@@ -75,12 +73,13 @@ const CitiesList = ({cityName, population}) => {
         isVisible ? hideItem() : showItem();
         setVisibility(!isVisible);
     }
-
+    
     return (
-        <StyledWrapper onClick={toggleElements}>
+        <StyledWrapper>
             <StyledTitle>
                 <h4>{cityName}</h4>
                 <span>{population}</span>
+                <button onClick={() => toggleElements(cityName)}>+</button>
             </StyledTitle>
             <StyledContent ref={elementContent}>
                 {cityOptions.isLoading && <Loader />}
@@ -89,6 +88,5 @@ const CitiesList = ({cityName, population}) => {
         </StyledWrapper>
     );
 }
-// margin: 0;
-// font-size: 1.7rem;
+
 export default CitiesList;

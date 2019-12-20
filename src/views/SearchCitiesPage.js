@@ -46,25 +46,27 @@ const SearchCitiesPage = () => {
     );
 
     const getCitiesOrderByPopulation = countryIso => {
-        const baseURL = `https://api.openaq.org/v1/cities/?country=${countryIso}&order_by=count&sort=desc&limit=10`;
+        const baseURL = `https://api.openaq.org/v1/cities/`;
+        const sortingOptions= `order_by=count&sort=desc`
+        const itemsLimit = 10;
+
         setCitiesOptions({citiesList: [], isLoading: true});
-        try {
-            const response = fetch(baseURL)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    setCitiesOptions({isLoading: false});
-                    console.log("ERROR");
-                    return false; 
-                }
-              })
-            const data = response;
-            return data;
-        } catch(error){
-            setCitiesOptions({isLoading: false});
-            console.log('ERROR ' + error); //modal
-        }
+        fetch(`${baseURL}?country=${countryIso}&${sortingOptions}&limit=${itemsLimit}`)
+        .then(response => {
+            if(!response.ok){
+                console.log("error");
+                setCitiesOptions({isLoading: false});
+                return false;
+            }
+            return response.json();
+        })
+        .then(cities => {
+            setCitiesOptions({ citiesList: cities.results, isLoading: false });
+        })
+        .catch(error => {
+            setCitiesOptions({ isLoading: false });
+            console.log("ERROR " + error);
+        });
     }
 
     const getIsoCode = chosenCountry => {
@@ -74,13 +76,10 @@ const SearchCitiesPage = () => {
 
     const handleShowCities = chosenCountry => {
         const isoCode = getIsoCode(chosenCountry);
-        if(isoCode) getCitiesOrderByPopulation(isoCode).then(( response => {
-            const cities = response ? response.results : [];
-            setCitiesOptions({citiesList: cities, isLoading: false});
-        }));
-        else console.log("Wrong typed country"); //modal
+        if (isoCode) getCitiesOrderByPopulation(isoCode);
+        else console.log("Wrong typed country");
     }
-    console.log(citiesOptions)
+
     return (
         <StyledWrapper>
             <Search 
