@@ -16,10 +16,14 @@ const Button = styled.button`
         background-position: 50%;
     `}
 
-    ${({ExpandButton}) => ExpandButton &&  css`
+    ${({ExpandButton, expanded}) => ExpandButton && css`
         background: url(${ExpandButton}) no-repeat;
         background-size: 50%;
         background-position: 50%;
+        ${expanded && css`
+            transform: rotate(180deg);
+        `}
+        transition: transform .5s;
     `}
 `;
 

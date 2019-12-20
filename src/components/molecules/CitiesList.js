@@ -2,6 +2,8 @@ import React, { useState, useRef, useReducer } from 'react';
 import styled from 'styled-components';
 import Loader from 'components/atoms/Loader';
 import Button from 'components/atoms/Button'
+import Header from 'components/atoms/Header'
+import Span from 'components/atoms/Span'
 import ExpandButton from 'assets/icons/expandButton.svg';
 
 const StyledWrapper = styled.div`
@@ -23,6 +25,7 @@ const StyledTitle = styled.div`
 
 const StyledInformationContainer = styled.div`
     flex-direction: column;
+    justify-content: center;
 `;
 
 
@@ -85,10 +88,18 @@ const CitiesList = ({cityName, population}) => {
         <StyledWrapper>
             <StyledTitle>
                 <StyledInformationContainer>
-                    <h4>{cityName}</h4>
-                    <span>{population}</span>
+                    <Header>
+                        {cityName}
+                    </Header>
+                    <Span>
+                        population: {population}
+                    </Span>
                 </StyledInformationContainer>
-                <Button ExpandButton={ExpandButton} onClick={() => toggleElements(cityName)}/>
+                <Button 
+                    ExpandButton={ExpandButton}
+                    expanded={isVisible}
+                    onClick={() => toggleElements(cityName)}
+                />
             </StyledTitle>
             <StyledContent ref={elementContent}>
                 {cityOptions.isLoading && <Loader />}
