@@ -22,7 +22,8 @@ about the 10 most polluted cities with carbon dioxide in
 one of four countries, which the user can enter or select
 from the list. After downloading and displaying the list,
 the user can check the description of the city by expanding
-its content.
+its content. Application save last correct searched country.
+When re-entering the site, the last valid city searched will be already entered in the search engine
 
 # To run application for working on it:
 `npm install`<br>
