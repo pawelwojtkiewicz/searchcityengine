@@ -4,8 +4,9 @@ import Loader from 'components/atoms/Loader';
 import CitiesList from 'components/molecules/CitiesList'
 
 const StyledWrapper = styled.div`
+    display: flex;
     flex-wrap: wrap;
-    width: 500px;
+    max-width: 500px;
     padding: 0 20px;
     margin: 0 auto;
 `;
@@ -15,11 +16,10 @@ const CitiesContainer = ({isLoading, citiesList}) => {
         <StyledWrapper>
             {isLoading && <Loader />}
             {citiesList.length > 0 && 
-                citiesList.map(({name, count}, index) => (
+                citiesList.map((name, index) => (
                     <CitiesList 
                         key={index} 
                         cityName={name} 
-                        population={count}
                     /> 
                 ))
             } 

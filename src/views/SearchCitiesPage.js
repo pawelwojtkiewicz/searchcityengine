@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { useToasts } from 'react-toast-notifications'
 import Search from 'components/organism/Search';
 import CitiesContainer from 'components/organism/CitiesContainer';
+import Header from 'components/atoms/Header'
 
 const StyledWrapper = styled.div`
+    display: flex;
     width: 100%;
     height: 100vh;
     flex-direction: column;
@@ -48,13 +50,23 @@ const SearchCitiesPage = () => {
         }
     );
 
+    const filterCityDuplicates = (citiesList) => {
+        const filteredCities = [];
+        for (let i = 0; i < citiesList.length; i++){
+            if(i === 0) filteredCities.push(citiesList[i].city);
+            if(filteredCities.length === 10) break;
+            const result = filteredCities.find(city => city === citiesList[i].city);
+            result === undefined && filteredCities.push(`${citiesList[i].city}`);
+        }
+        return filteredCities
+    }
+
     const getCitiesOrderByPopulation = countryIso => {
-        const baseURL = `https://api.openaq.org/v1/cities/`;
-        const sortingOptions= `order_by=count&sort=desc`
-        const itemsLimit = 10;
+        const baseURL = `https://api.openaq.org/v1/measurements/`;
+        const sortingOptions= `parameter=co&order_by=value&sort=desc`
 
         setCitiesOptions({citiesList: [], isLoading: true});
-        fetch(`${baseURL}?country=${countryIso}&${sortingOptions}&limit=${itemsLimit}`)
+        fetch(`${baseURL}?country=${countryIso}&${sortingOptions}`)
         .then(response => {
             if(!response.ok){
                 setCitiesOptions({citiesList: [], isLoading: false});
@@ -64,7 +76,7 @@ const SearchCitiesPage = () => {
             return response.json();
         })
         .then(response => {
-            const cities = response ? response.results : [];
+            const cities = filterCityDuplicates(response.results)
             setCitiesOptions({ citiesList: cities, isLoading: false });
         })
         .catch(error => {
@@ -89,6 +101,9 @@ const SearchCitiesPage = () => {
     
     return (
         <StyledWrapper>
+            <Header heroHeader>
+                Choose or type country and check 10 most polluted towns
+            </Header>
             <Search 
                 handleShowCities={handleShowCities} 
                 countryList={countryList} 

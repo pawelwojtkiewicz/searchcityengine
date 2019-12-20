@@ -4,10 +4,10 @@ import { useToasts } from 'react-toast-notifications'
 import Loader from 'components/atoms/Loader';
 import Button from 'components/atoms/Button'
 import Header from 'components/atoms/Header'
-import Span from 'components/atoms/Span'
 import ExpandButton from 'assets/icons/expandButton.svg';
 
 const StyledWrapper = styled.div`
+    display: flex;
     flex-direction: column;
     width: 100%;
     padding: 15px;
@@ -20,20 +20,15 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
+    display: flex;
     justify-content: space-between;
 `;
-
-const StyledInformationContainer = styled.div`
-    flex-direction: column;
-    justify-content: center;
-`;
-
 
 const StyledContent = styled.div`
     display: none;
 `;
 
-const CitiesList = ({cityName, population}) => {
+const CitiesList = ({cityName}) => {
     const { addToast } = useToasts();
     const [isVisible, setVisibility] = useState(false);
     const [cityOptions, setCityOptions] = useReducer(
@@ -86,14 +81,9 @@ const CitiesList = ({cityName, population}) => {
     return (
         <StyledWrapper>
             <StyledTitle>
-                <StyledInformationContainer>
-                    <Header>
-                        {cityName}
-                    </Header>
-                    <Span>
-                        population: {population}
-                    </Span>
-                </StyledInformationContainer>
+                <Header>
+                    {cityName}
+                </Header>
                 <Button 
                     ExpandButton={ExpandButton}
                     expanded={isVisible}

@@ -17,10 +17,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1.6rem;
     font-family: "Montserrat", sans-serif;
   }
-
-  div{
-    display: flex;
-  }
 `;
 
 export default GlobalStyle;

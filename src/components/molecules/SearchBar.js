@@ -6,6 +6,7 @@ import MagnifyingGlass from 'assets/icons/magnifyingGlass.svg';
 
 const StyledWrapper = styled.div`
     position: relative;
+    display: flex;
     height: fit-content;
 `;
 

@@ -5,8 +5,9 @@ import SearchBar from 'components/molecules/SearchBar'
 import SearchList from 'components/molecules/SearchList'
 
 const StyledWrapper = styled.div`
-   flex-direction: column;
-   margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    margin: 50px auto;
 `;
 
 const SearchCitiesContainer = ({handleShowCities, countryList}) => {
