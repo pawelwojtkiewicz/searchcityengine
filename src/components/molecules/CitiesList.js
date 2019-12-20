@@ -1,5 +1,6 @@
 import React, { useState, useRef, useReducer } from 'react';
 import styled from 'styled-components';
+import { useToasts } from 'react-toast-notifications'
 import Loader from 'components/atoms/Loader';
 import Button from 'components/atoms/Button'
 import Header from 'components/atoms/Header'
@@ -14,9 +15,8 @@ const StyledWrapper = styled.div`
     border-radius: 10px;
     margin: 0 0 20px 0;
     cursor: pointer;
-
-    transition: height .25s ease;
     overflow: hidden;
+    transition: transform .5s;
 `;
 
 const StyledTitle = styled.div`
@@ -34,6 +34,7 @@ const StyledContent = styled.div`
 `;
 
 const CitiesList = ({cityName, population}) => {
+    const { addToast } = useToasts();
     const [isVisible, setVisibility] = useState(false);
     const [cityOptions, setCityOptions] = useReducer(
         (state, newState) => ({ ...state, ...newState}),
@@ -52,9 +53,8 @@ const CitiesList = ({cityName, population}) => {
         fetch(`${baseURL}&${additionalParams}&titles=${cityName}`)
         .then(response => {
             if(!response.ok){
-                console.log("error");
                 setCityOptions({isLoading: false});
-                return false;
+                return addToast("Error downloading city description, please try again later.", { appearance: 'error', autoDismiss: true, });
             }
             return response.json();
         })
@@ -65,10 +65,9 @@ const CitiesList = ({cityName, population}) => {
         })
         .catch(error => {
             setCityOptions({isLoading: false});
-            console.log("ERROR " + error);
+            return addToast("Error downloading city description, please try again later.", { appearance: 'error', autoDismiss: false, });
         });
     }
-
 
     const toggleElements = cityName => {
         const showItem = () => {

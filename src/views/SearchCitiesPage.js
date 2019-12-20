@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import styled from 'styled-components';
+import { useToasts } from 'react-toast-notifications'
 import Search from 'components/organism/Search';
 import CitiesContainer from 'components/organism/CitiesContainer';
 
@@ -36,7 +37,9 @@ const countryList = [
     },
 ];
 
+
 const SearchCitiesPage = () => {
+    const { addToast } = useToasts();
     const [citiesOptions, setCitiesOptions] = useReducer(
         (state, newState) => ({ ...state, ...newState}),
         {
@@ -54,18 +57,19 @@ const SearchCitiesPage = () => {
         fetch(`${baseURL}?country=${countryIso}&${sortingOptions}&limit=${itemsLimit}`)
         .then(response => {
             if(!response.ok){
-                console.log("error");
-                setCitiesOptions({isLoading: false});
+                setCitiesOptions({citiesList: [], isLoading: false});
+                addToast("Error downloading cities, please try again later.", { appearance: 'error', autoDismiss: true, });
                 return false;
             }
             return response.json();
         })
-        .then(cities => {
-            setCitiesOptions({ citiesList: cities.results, isLoading: false });
+        .then(response => {
+            const cities = response ? response.results : [];
+            setCitiesOptions({ citiesList: cities, isLoading: false });
         })
         .catch(error => {
             setCitiesOptions({ isLoading: false });
-            console.log("ERROR " + error);
+            return addToast("Error downloading cities, please try again later.", { appearance: 'error', autoDismiss: true, });
         });
     }
 
@@ -80,9 +84,9 @@ const SearchCitiesPage = () => {
             localStorage.setItem('chosenCountry', `${chosenCountry}`)
             getCitiesOrderByPopulation(isoCode);
         }
-        else console.log("Wrong typed country");
+        else addToast("Invalid country selected.", { appearance: 'error', autoDismiss: true, });;
     }
-
+    
     return (
         <StyledWrapper>
             <Search 
