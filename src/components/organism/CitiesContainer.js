@@ -1,25 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import Loader from 'components/atoms/Loader';
 
 const StyledWrapper = styled.div`
   
 `;
 
 const CitiesContainer = ({isLoading, citiesList}) => {
-    //let content;
-
-    // if (cityList === null){
-    //     return "";
-    // } else if (cityList.length === 0){
-    //     return "Ładowanie"
-    // } else if (cityList.length > 0){
-    //     return "Miasta"
-    // }
-
     return (
         <StyledWrapper>
-            {isLoading && "Loading"}
+            {isLoading && <Loader />}
             {citiesList.length > 0 && "Miasta"}
         </StyledWrapper>
     );

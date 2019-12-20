@@ -45,21 +45,21 @@ const SearchCitiesPage = () => {
         }
     );
 
-    const getCities = async countryIso => { //poprawić nazwę
-        const baseURL = `https://api.openaq.org/v1/cities/?country=${countryIso}&order_by=count&sort=desc&limit=10`;   
+    const getCitiesOrderByPopulation = async countryIso => {
+        const baseURL = `https://api.openaq.org/v1/cities/?country=${countryIso}&order_by=count&sort=desc&limit=10`;
         setCitiesOptions({isLoading: true});
         try {
             const response = await fetch(baseURL)
-            // .then(response => {
-            //     if (response.ok) {
-            //       return response.json();
-            //     } else {
-            //         setCitiesOptions({isLoading: false});
-            //         console.log("ERROR");
-            //     }
-            //   })
-            const data = await response.json();
-
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    setCitiesOptions({isLoading: false});
+                    console.log("ERROR");
+                    return false; 
+                }
+              })
+            const data = await response;
             return data;
         } catch(error){
             setCitiesOptions({isLoading: false});
@@ -74,7 +74,7 @@ const SearchCitiesPage = () => {
 
     const handleShowCities = chosenCountry => {
         const isoCode = getIsoCode(chosenCountry);
-        if(isoCode) getCities(isoCode).then(( response => {
+        if(isoCode) getCitiesOrderByPopulation(isoCode).then(( response => {
             console.log(response)
             const cities = response ? response.results : [];
             setCitiesOptions({citiesList: cities, isLoading: false});
