@@ -25,7 +25,7 @@ const StyledContent = styled.div`
 
 const CitiesList = ({cityName, population}) => {
     const [isVisible, setVisibility] = useState(false);
-    const [cityOptions, setcityOptions] = useReducer(
+    const [cityOptions, setCityOptions] = useReducer(
         (state, newState) => ({ ...state, ...newState}),
         {
             cityDescription: "",
@@ -38,23 +38,23 @@ const CitiesList = ({cityName, population}) => {
         const baseURL = `https://en.wikipedia.org/w/api.php?action=query`;
         const additionalParams= `format=json&origin=*&explaintext&prop=extracts&explaintext&exintro&redirects=1&exsentences=5`
 
-        setcityOptions({cityOptions: "", isLoading: true});
+        setCityOptions({cityOptions: "", isLoading: true});
         fetch(`${baseURL}&${additionalParams}&titles=${cityName}`)
         .then(response => {
             if(!response.ok){
                 console.log("error");
-                setcityOptions({isLoading: false});
+                setCityOptions({isLoading: false});
                 return false;
             }
             return response.json();
         })
-        .then(description => {
-            const a0 = Object.values(description.query.pages);
-            const a1 = (array) => array.extract;
-            setcityOptions({ cityDescription: a1(...a0), isLoading: false });
+        .then(data => {
+            const generalDescription = Object.values(data.query.pages);
+            const getExactDescription = (array) => array.extract;
+            setCityOptions({ cityDescription: getExactDescription(...generalDescription), isLoading: false });
         })
         .catch(error => {
-            setcityOptions({isLoading: false});
+            setCityOptions({isLoading: false});
             console.log("ERROR " + error);
         });
     }

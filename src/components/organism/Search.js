@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDetectOutSideClick } from 'hooks/useDetectOutSideClick'
 import SearchBar from 'components/molecules/SearchBar'
@@ -73,6 +73,13 @@ const SearchCitiesContainer = ({handleShowCities, countryList}) => {
     const submitData = () => {
         searchInputContent === "" ? setSendButtonError(true) : handleShowCities(searchInputContent);
     }
+
+    useEffect(() => {
+        const handleSavedValue = () => {
+            if (localStorage.getItem('chosenCountry')  !== null) setSearchInputContent(localStorage.getItem('chosenCountry'));
+        }
+        handleSavedValue();
+    }, []);
 
     return (
         <StyledWrapper ref={listOfElements}>

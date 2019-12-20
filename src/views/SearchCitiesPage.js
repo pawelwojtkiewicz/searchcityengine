@@ -76,7 +76,10 @@ const SearchCitiesPage = () => {
 
     const handleShowCities = chosenCountry => {
         const isoCode = getIsoCode(chosenCountry);
-        if (isoCode) getCitiesOrderByPopulation(isoCode);
+        if (isoCode) {
+            localStorage.setItem('chosenCountry', `${chosenCountry}`)
+            getCitiesOrderByPopulation(isoCode);
+        }
         else console.log("Wrong typed country");
     }
 
