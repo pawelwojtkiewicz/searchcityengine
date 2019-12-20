@@ -5,6 +5,7 @@
 - React
 - styled-components
 - hooks
+- AtomDesign
 
 # API
 - for pollution statistics: https://docs.openaq.org/
