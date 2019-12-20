@@ -34,7 +34,7 @@ const SearchBar = ({
                 onKeyDown={onKeyDown}
             />
             <Button 
-                onClick={submitData} 
+                onClick={submitData}
                 MagnifyingGlass={MagnifyingGlass}
             />
         </StyledWrapper>

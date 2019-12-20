@@ -1,6 +1,8 @@
 import React, { useState, useRef, useReducer } from 'react';
 import styled from 'styled-components';
 import Loader from 'components/atoms/Loader';
+import Button from 'components/atoms/Button'
+import ExpandButton from 'assets/icons/expandButton.svg';
 
 const StyledWrapper = styled.div`
     flex-direction: column;
@@ -16,8 +18,13 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
-
+    justify-content: space-between;
 `;
+
+const StyledInformationContainer = styled.div`
+    flex-direction: column;
+`;
+
 
 const StyledContent = styled.div`
     display: none;
@@ -77,9 +84,11 @@ const CitiesList = ({cityName, population}) => {
     return (
         <StyledWrapper>
             <StyledTitle>
-                <h4>{cityName}</h4>
-                <span>{population}</span>
-                <button onClick={() => toggleElements(cityName)}>+</button>
+                <StyledInformationContainer>
+                    <h4>{cityName}</h4>
+                    <span>{population}</span>
+                </StyledInformationContainer>
+                <Button ExpandButton={ExpandButton} onClick={() => toggleElements(cityName)}/>
             </StyledTitle>
             <StyledContent ref={elementContent}>
                 {cityOptions.isLoading && <Loader />}
