@@ -45,11 +45,11 @@ const SearchCitiesPage = () => {
         }
     );
 
-    const getCitiesOrderByPopulation = async countryIso => {
+    const getCitiesOrderByPopulation = countryIso => {
         const baseURL = `https://api.openaq.org/v1/cities/?country=${countryIso}&order_by=count&sort=desc&limit=10`;
-        setCitiesOptions({isLoading: true});
+        setCitiesOptions({citiesList: [], isLoading: true});
         try {
-            const response = await fetch(baseURL)
+            const response = fetch(baseURL)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -59,7 +59,7 @@ const SearchCitiesPage = () => {
                     return false; 
                 }
               })
-            const data = await response;
+            const data = response;
             return data;
         } catch(error){
             setCitiesOptions({isLoading: false});
@@ -75,13 +75,12 @@ const SearchCitiesPage = () => {
     const handleShowCities = chosenCountry => {
         const isoCode = getIsoCode(chosenCountry);
         if(isoCode) getCitiesOrderByPopulation(isoCode).then(( response => {
-            console.log(response)
             const cities = response ? response.results : [];
             setCitiesOptions({citiesList: cities, isLoading: false});
         }));
         else console.log("Wrong typed country"); //modal
     }
-
+    console.log(citiesOptions)
     return (
         <StyledWrapper>
             <Search 
