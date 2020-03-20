@@ -1,30 +1,25 @@
-# 10 most polluted towns
-## in Poland, Germany, Spain and France
+# Companies database
 
 # Technologies
 - React
 - styled-components
 - hooks
+- Provider
 - AtomDesign
 
 # API
-- for pollution statistics: https://docs.openaq.org/
-- for cities description: https://www.mediawiki.org/wiki/API:Query
-
-# Outside packages
-- React Toast Notifications: https://github.com/jossmac/react-toast-notifications
+- for basic companies informations: https://recruitment.hal.skygate.io/companies
+- for companany income: https://recruitment.hal.skygate.io/incomes/:id
 
 # Additional information
 - added jsconfig.json for path changes. The source folder is /src
 
 # Application description
-The application retrieves data from an external website
-about the 10 most polluted cities with carbon dioxide in
-one of four countries, which the user can enter or select
-from the list. After downloading and displaying the list,
-the user can check the description of the city by expanding
-its content. Application save last correct searched country.
-When re-entering the site, the last valid city searched will be already entered in the search engine
+Application description
+The application provides us table with fetched companies data which include basic informations as a id, name city and total income.
+By clicking on details the application show more specific company informations as a latest month income or total and avarage income selected by user by date range.
+There is also company searcher that filter by company name.
+Table with all companies and searched elements are paginated and the application remember last page where user was before using searcher.
 
 # To run application for working on it:
 `npm install`<br>
